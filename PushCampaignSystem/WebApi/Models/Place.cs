@@ -2,7 +2,7 @@
 {
     public class Place
     {
-        public long PlaceId { get; set; }
+        public int PlaceId { get; set; }
 
         public string Name { get; set; }
     }
