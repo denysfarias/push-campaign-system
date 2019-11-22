@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Models
 {
@@ -6,8 +7,10 @@ namespace WebApi.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public string Provider { get; set; }
 
+        [Required]
         public string PushMessage { get; set; }
 
         public IEnumerable<Place> Targeting { get; set; }
