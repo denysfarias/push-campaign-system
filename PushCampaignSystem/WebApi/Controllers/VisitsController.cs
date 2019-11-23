@@ -13,22 +13,19 @@ namespace WebApi.Controllers
     {
         private readonly ILogger<VisitsController> _logger;
 
-        private readonly ISimpleDataStore<Campaign> _campaignDataStore;
+        private readonly IVisitManager _visitManager;
 
-        private readonly ISimpleDataStore<Visit> _visitDataStore;
-
-        public VisitsController(ILogger<VisitsController> logger, ISimpleDataStore<Campaign> campaignDataStore, ISimpleDataStore<Visit> visitDataStore)
+        public VisitsController(IVisitManager visitManager, ILogger<VisitsController> logger)
         {
+            _visitManager = visitManager;
             _logger = logger;
-            _campaignDataStore = campaignDataStore;
-            _visitDataStore = visitDataStore;
         }
 
         // GET: api/Visits
         [HttpGet]
         public ActionResult<IEnumerable<Visit>> GetAll()
         {
-            return _visitDataStore.FindAll().ToList();
+            return _visitManager.GetAll().ToList();
         }
 
         // POST: api/Visits/batch/
@@ -36,16 +33,16 @@ namespace WebApi.Controllers
         [Route("batch")]
         public ActionResult PostBatch([FromBody] IEnumerable<Visit> visits)
         {
-            _visitDataStore.Load(visits);
+            _visitManager.Load(visits);
             return Ok();
         }
 
-        // DELETE: api/Visits
-        [HttpDelete()]
-        public ActionResult DeleteAll()
-        {
-            _visitDataStore.Reset();
-            return Ok();
-        }
+        //// DELETE: api/Visits
+        //[HttpDelete()]
+        //public ActionResult DeleteAll()
+        //{
+        //    _visitDataStore.Reset();
+        //    return Ok();
+        //}
     }
 }

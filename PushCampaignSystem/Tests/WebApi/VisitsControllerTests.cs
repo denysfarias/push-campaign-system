@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using WebApi.Controllers;
 using WebApi.Models;
+using WebApi.PushCampaignService;
 using WebApi.PushCampaignService.DataStore;
 using Xunit;
 
@@ -16,7 +17,9 @@ namespace Tests.WebApi
 
             var visitDataStore = new MockVisitsSimpleDataStore(visits ?? new List<Visit>());
 
-            return new VisitsController(logger: null, campaignDataStore: campaignDataStore, visitDataStore: visitDataStore);
+            var manager = new VisitManager(visitDataStore, campaignDataStore);
+
+            return new VisitsController(manager, logger: null);
         }
 
         [Fact]
@@ -42,15 +45,15 @@ namespace Tests.WebApi
             Assert.IsAssignableFrom<OkResult>(response);
         }
 
-        [Fact]
-        public void DeleteAll_ReturnsOK()
-        {
-            var visits = VisitSamples.Get();
-            var controller = SetupController(visits);
+        //[Fact]
+        //public void DeleteAll_ReturnsOK()
+        //{
+        //    var visits = VisitSamples.Get();
+        //    var controller = SetupController(visits);
             
-            var response = controller.DeleteAll();
+        //    var response = controller.DeleteAll();
 
-            Assert.IsAssignableFrom<OkResult>(response);
-        }
+        //    Assert.IsAssignableFrom<OkResult>(response);
+        //}
     }
 }
