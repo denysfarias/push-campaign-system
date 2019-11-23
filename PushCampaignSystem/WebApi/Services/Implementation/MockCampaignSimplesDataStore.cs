@@ -6,16 +6,16 @@ using WebApi.Models;
 
 namespace WebApi.Services.Implementation
 {
-    public class MockCampaignRepository : ICampaignRepository
+    public class MockCampaignSimpleDataStore : ICampaignSimpleDataStore
     {
         private readonly List<Campaign> _campaigns;
 
-        public MockCampaignRepository()
+        public MockCampaignSimpleDataStore()
         {
             _campaigns = new List<Campaign>();
         }
 
-        public MockCampaignRepository(IEnumerable<Campaign> campaigns)
+        public MockCampaignSimpleDataStore(IEnumerable<Campaign> campaigns)
         {
             _campaigns = campaigns.ToList();
         }

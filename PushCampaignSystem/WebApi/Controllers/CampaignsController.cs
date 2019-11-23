@@ -15,9 +15,9 @@ namespace WebApi.Controllers
     public class CampaignsController : ControllerBase
     {
         private readonly ILogger<CampaignsController> _logger;
-        private readonly ICampaignRepository _campaignRepository;
+        private readonly ICampaignSimpleDataStore _campaignRepository;
 
-        public CampaignsController(ILogger<CampaignsController> logger, ICampaignRepository campaignRepository)
+        public CampaignsController(ILogger<CampaignsController> logger, ICampaignSimpleDataStore campaignRepository)
         {
             _logger = logger;
             _campaignRepository = campaignRepository;

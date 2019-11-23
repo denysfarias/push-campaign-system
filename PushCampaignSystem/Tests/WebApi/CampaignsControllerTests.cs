@@ -10,7 +10,7 @@ namespace Tests
 {
     public class CampaignsControllerTests
     {
-        private ICampaignRepository _repository;
+        private ICampaignSimpleDataStore _repository;
 
         private void Setup()
         {
@@ -61,7 +61,7 @@ namespace Tests
                 }
             };
 
-            _repository = new MockCampaignRepository(sample);
+            _repository = new MockCampaignSimpleDataStore(sample);
         }
 
         [Fact]
