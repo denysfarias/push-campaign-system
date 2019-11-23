@@ -5,10 +5,10 @@ namespace WebApi.Services
 {
     public interface ICampaignRepository
     {
-        Campaign FindById(int id);
-
         IEnumerable<Campaign> FindAll();
 
-        Campaign Create(Campaign campaign);
+        void Load(IEnumerable<Campaign> campaigns);
+
+        void Reset();
     }
 }

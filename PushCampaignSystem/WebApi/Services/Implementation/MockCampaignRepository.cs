@@ -15,30 +15,19 @@ namespace WebApi.Services.Implementation
             _campaigns = new List<Campaign>();
         }
 
-        public Campaign Create(Campaign campaign)
+        public MockCampaignRepository(IEnumerable<Campaign> campaigns)
         {
-            if (campaign == null)
+            _campaigns = campaigns.ToList();
+        }
+
+        public void Load(IEnumerable<Campaign> campaigns)
+        {
+            if (campaigns == null)
                 throw new ArgumentNullException();
 
-            var keyExists = _campaigns.Any(c => c.Id == campaign.Id);
-            if (keyExists)
-                throw new ArgumentException("Key already exists!");
+            //TODO: validate input
 
-            if (campaign.Id <= 0)
-            {
-                int nextId;
-
-                do
-                {
-                    nextId = new Random().Next();
-                } while (nextId == 0 || _campaigns.Any(c => c.Id == nextId));
-
-                campaign.Id = nextId;
-            }
-
-            _campaigns.Add(campaign);
-
-            return campaign;
+            _campaigns.AddRange(campaigns);
         }
 
         public IEnumerable<Campaign> FindAll()
@@ -46,9 +35,9 @@ namespace WebApi.Services.Implementation
             return _campaigns.AsReadOnly();
         }
 
-        public Campaign FindById(int id)
+        public void Reset()
         {
-            return _campaigns.FirstOrDefault(campaign => campaign.Id == id);
+            _campaigns.Clear();
         }
     }
 }

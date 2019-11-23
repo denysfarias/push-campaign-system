@@ -25,7 +25,6 @@ namespace WebApi.Controllers
 
         // GET: api/Campaigns
         [HttpGet]
-        [Route("batch")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Campaign>> GetAll()
         {
@@ -33,57 +32,21 @@ namespace WebApi.Controllers
             return result;
         }
 
-        // GET: api/Campaigns/5
-        [HttpGet("{id}", Name = "Get")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Campaign> GetById(int id)
-        {
-            var result = _campaignRepository.FindById(id);
-            
-            if (result == null)
-                return NotFound();
-
-            return result;
-        }
-
-        // POST: api/Campaigns
-        [HttpPost]
-        public ActionResult Post([FromBody] Campaign value)
-        {
-            throw new NotImplementedException();
-
-            var result = _campaignRepository.Create(value);
-
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, null);
-        }
-
         // POST: api/Campaigns/batch/
         [HttpPost]
         [Route("batch")]
-        public ActionResult PostBatch([FromBody] IEnumerable<Campaign> value)
+        public ActionResult PostBatch([FromBody] IEnumerable<Campaign> campaigns)
         {
-            throw new NotImplementedException();
-
-            var ids = new List<int>(capacity: value.Count());
-            foreach (var campaign in value)
-            {
-                ids.Add(_campaignRepository.Create(campaign).Id);
-            }
+            _campaignRepository.Load(campaigns);
+            return Ok();
         }
 
-        // PUT: api/Campaigns/5
-        [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Campaign value)
+        // DELETE: api/Campaigns/
+        [HttpDelete()]
+        public ActionResult DeleteAll()
         {
-            throw new NotImplementedException();
-        }
-
-        // DELETE: api/Campaigns/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
-        {
-            throw new NotImplementedException();
+            _campaignRepository.Reset();
+            return Ok();
         }
     }
 }

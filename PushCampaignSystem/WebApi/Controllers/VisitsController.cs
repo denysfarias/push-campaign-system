@@ -24,20 +24,6 @@ namespace WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        // GET: api/Visits/5
-        [HttpGet("{id}", Name = "Get")]
-        public ActionResult<Visit> Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        // POST: api/Visits
-        [HttpPost]
-        public ActionResult Post([FromBody] Visit value)
-        {
-            throw new NotImplementedException();
-        }
-
         // POST: api/Visits/batch/
         [HttpPost]
         [Route("batch")]
@@ -46,16 +32,9 @@ namespace WebApi.Controllers
             throw new NotImplementedException();
         }
 
-        // PUT: api/Visits/5
-        [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Visit value)
-        {
-            throw new NotImplementedException();
-        }
-
         // DELETE: api/Visits/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        [HttpDelete()]
+        public ActionResult Delete()
         {
             throw new NotImplementedException();
         }

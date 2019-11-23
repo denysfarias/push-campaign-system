@@ -10,55 +10,58 @@ namespace Tests
 {
     public class CampaignsControllerTests
     {
-        private IList<Campaign> _samples;
         private ICampaignRepository _repository;
 
         private void Setup()
         {
-            _repository = new MockCampaignRepository();
-            _repository.Create(new Campaign()
+            var sample = new List<Campaign>()
             {
-                Id = 1,
-                Provider = "localytics",
-                PushMessage = "70% OFF! Order our best pizza: In Loco Pizza!",
-                Targeting = new List<Place>()
+                new Campaign()
                 {
-                    new Place()
+                    Id = 1,
+                    Provider = "localytics",
+                    PushMessage = "70% OFF! Order our best pizza: In Loco Pizza!",
+                    Targeting = new List<Place>()
                     {
-                        PlaceId = 79,
-                        Name = "In Loco Pizzas – Recife Antigo"
-                    },
-                    new Place()
+                        new Place()
+                        {
+                            PlaceId = 79,
+                            Name = "In Loco Pizzas – Recife Antigo"
+                        },
+                        new Place()
+                        {
+                            PlaceId = 22,
+                            Name = "In Loco Pizzas – Casa Forte"
+                        }
+                    }
+                },
+                new Campaign()
+                {
+                    Id = 2,
+                    Provider = "mixpanel",
+                    PushMessage = "Peça o drink do dia! Se beber, não dirija. :)",
+                    Targeting = new List<Place>()
                     {
-                        PlaceId = 22,
-                        Name = "In Loco Pizzas – Casa Forte"
+                        new Place()
+                        {
+                            PlaceId = 33,
+                            Name = "Bar da esquina"
+                        },
+                        new Place()
+                        {
+                            PlaceId = 90,
+                            Name = "In Loco Drinks Bar"
+                        },
+                        new Place()
+                        {
+                            PlaceId = 7624,
+                            Name = "In Loco Restaurante"
+                        }
                     }
                 }
-            });
-            _repository.Create(new Campaign()
-            {
-                Id = 2,
-                Provider = "mixpanel",
-                PushMessage = "Peça o drink do dia! Se beber, não dirija. :)",
-                Targeting = new List<Place>()
-                {
-                    new Place()
-                    {
-                        PlaceId = 33,
-                        Name = "Bar da esquina"
-                    },
-                    new Place()
-                    {
-                        PlaceId = 90,
-                        Name = "In Loco Drinks Bar"
-                    },
-                    new Place()
-                    {
-                        PlaceId = 7624,
-                        Name = "In Loco Restaurante"
-                    }
-                }
-            });
+            };
+
+            _repository = new MockCampaignRepository(sample);
         }
 
         [Fact]
@@ -74,29 +77,45 @@ namespace Tests
         }
 
         [Fact]
-        public void GetById_ReturnsCampaignById()
+        public void Load_ReturnsOK()
         {
             Setup();
-            var id = 1;
+            
+            var campaign = new Campaign()
+            {
+                Id = 3,
+                Provider = "Test-Provider-4x4",
+                PushMessage = "Teste já essa aventura!",
+                Targeting = new List<Place>()
+                {
+                    new Place()
+                    {
+                        PlaceId = 1,
+                        Name = "Clube do Teste"
+                    },
+                    new Place()
+                    {
+                        PlaceId = 2,
+                        Name = "Test Coffee"
+                    }
+                }
+            };
 
             var controller = new CampaignsController(null, _repository);
-            var response = controller.GetById(id);
+            var response = controller.PostBatch(new List<Campaign>() { campaign });
 
-            var responseValue = Assert.IsAssignableFrom<Campaign>(response.Value);
-            Assert.NotNull(responseValue);
-            Assert.Equal(id, responseValue.Id);
+            Assert.IsAssignableFrom<OkResult>(response);
         }
 
         [Fact]
-        public void GetById_ReturnsNotFoundResult()
+        public void DeleteAll_ReturnsOK()
         {
             Setup();
-            var id = int.MaxValue;
 
             var controller = new CampaignsController(null, _repository);
-            var response = controller.GetById(id);
+            var response = controller.DeleteAll();
 
-            Assert.IsAssignableFrom<NotFoundResult>(response.Result);
+            Assert.IsAssignableFrom<OkResult>(response);
         }
     }
 }
