@@ -1,6 +1,6 @@
 ﻿using System;
 using WebApi.Models;
-using WebApi.PushCampaignService.Domain;
+using WebApi.PushCampaignService.Domain.PushNotificationProvider;
 
 namespace WebApi.PushNotificationProviders
 {

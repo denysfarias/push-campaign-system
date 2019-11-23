@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
-using WebApi.PushCampaignService.Domain;
+using WebApi.PushCampaignService.Domain.DataStore;
 
 namespace WebApi.PushCampaignService.DataStore
 {
-    public class MockCampaignSimpleDataStore : ISimpleDataStore<Campaign>
+    public class MockCampaignStore : IDataStore<Campaign>
     {
         private readonly List<Campaign> _campaigns;
 
-        public MockCampaignSimpleDataStore()
+        public MockCampaignStore()
         {
             _campaigns = new List<Campaign>();
         }
 
-        public MockCampaignSimpleDataStore(IEnumerable<Campaign> campaigns)
+        public MockCampaignStore(IEnumerable<Campaign> campaigns)
         {
             _campaigns = campaigns.ToList();
         }

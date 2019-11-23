@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using WebApi.Models;
 using WebApi.PushCampaignService.Domain;
+using WebApi.PushCampaignService.Domain.DataStore;
 
 namespace WebApi.PushCampaignService
 {
     public class CampaignManager : ICampaignManager
     {
-        private readonly ISimpleDataStore<Campaign> _campaignStore;
+        private readonly IDataStore<Campaign> _campaignStore;
 
-        public CampaignManager(ISimpleDataStore<Campaign> campaignStore)
+        public CampaignManager(IDataStore<Campaign> campaignStore)
         {
             _campaignStore = campaignStore;
         }

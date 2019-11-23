@@ -13,7 +13,7 @@ namespace Tests.WebApi
         private CampaignsController SetupController()
         {
             var samples = CampaignSamples.Get();
-            var dataStore = new MockCampaignSimpleDataStore(samples);
+            var dataStore = new MockCampaignStore(samples);
             var manager = new CampaignManager(dataStore);
             return new CampaignsController(manager, logger: null);
         }

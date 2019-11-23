@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApi.PushCampaignService.Domain
+namespace WebApi.PushCampaignService.Domain.DataStore
 {
-    public interface ISimpleDataStore<TData> where TData : class
+    public interface IDataStore<TData> where TData : class
     {
         IEnumerable<TData> FindAll();
 

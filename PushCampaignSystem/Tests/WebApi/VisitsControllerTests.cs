@@ -13,9 +13,9 @@ namespace Tests.WebApi
         private VisitsController SetupController(IEnumerable<Visit> visits = null)
         {
             var campaigns = CampaignSamples.Get();
-            var campaignDataStore = new MockCampaignSimpleDataStore(campaigns);
+            var campaignDataStore = new MockCampaignStore(campaigns);
 
-            var visitDataStore = new MockVisitsSimpleDataStore(visits ?? new List<Visit>());
+            var visitDataStore = new MockVisitStore(visits ?? new List<Visit>());
 
             var manager = new VisitManager(visitDataStore, campaignDataStore);
 

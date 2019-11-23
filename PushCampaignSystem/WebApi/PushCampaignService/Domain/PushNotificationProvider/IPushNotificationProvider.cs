@@ -1,6 +1,6 @@
 ﻿using WebApi.Models;
 
-namespace WebApi.PushCampaignService.Domain
+namespace WebApi.PushCampaignService.Domain.PushNotificationProvider
 {
     public interface IPushNotificationProvider
     {
