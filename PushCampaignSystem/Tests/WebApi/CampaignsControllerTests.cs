@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using WebApi.Controllers;
 using WebApi.Models;
-using WebApi.Services;
 using WebApi.Services.Implementation;
 using Xunit;
 
@@ -10,11 +9,11 @@ namespace Tests
 {
     public class CampaignsControllerTests
     {
-        private ICampaignSimpleDataStore _repository;
+        private readonly IEnumerable<Campaign> Sample;
 
-        private void Setup()
+        public CampaignsControllerTests()
         {
-            var sample = new List<Campaign>()
+            Sample = new List<Campaign>()
             {
                 new Campaign()
                 {
@@ -60,16 +59,19 @@ namespace Tests
                     }
                 }
             };
+        }
 
-            _repository = new MockCampaignSimpleDataStore(sample);
+        private CampaignsController SetupController()
+        {
+            var repository = new MockCampaignSimpleDataStore(Sample);
+            return new CampaignsController(logger: null, campaignRepository: repository);
         }
 
         [Fact]
         public void GetAll_ReturnsCampaigns()
         {
-            Setup();
+            var controller = SetupController();
 
-            var controller = new CampaignsController(null, _repository);
             var response = controller.GetAll();
 
             var responseValue = Assert.IsAssignableFrom<IEnumerable<Campaign>>(response.Value);
@@ -79,8 +81,7 @@ namespace Tests
         [Fact]
         public void Load_ReturnsOK()
         {
-            Setup();
-            
+            var controller = SetupController();
             var campaign = new Campaign()
             {
                 Id = 3,
@@ -101,7 +102,6 @@ namespace Tests
                 }
             };
 
-            var controller = new CampaignsController(null, _repository);
             var response = controller.PostBatch(new List<Campaign>() { campaign });
 
             Assert.IsAssignableFrom<OkResult>(response);
@@ -110,9 +110,8 @@ namespace Tests
         [Fact]
         public void DeleteAll_ReturnsOK()
         {
-            Setup();
+            var controller = SetupController();
 
-            var controller = new CampaignsController(null, _repository);
             var response = controller.DeleteAll();
 
             Assert.IsAssignableFrom<OkResult>(response);
