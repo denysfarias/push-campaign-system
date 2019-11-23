@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
-using WebApi.Services;
+using WebApi.PushCampaignService.Domain;
 
 namespace WebApi.Controllers
 {

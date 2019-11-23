@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Tests.WebApi;
 using WebApi.Controllers;
 using WebApi.Models;
-using WebApi.Services.Implementation;
+using WebApi.PushCampaignService.DataStore;
 using Xunit;
 
-namespace Tests
+namespace Tests.WebApi
 {
     public class CampaignsControllerTests
     {
@@ -36,7 +35,7 @@ namespace Tests
             {
                 Id = 3,
                 Provider = "Test-Provider-4x4",
-                PushMessage = "Teste já essa aventura!",
+                PushMessage = "Teste jï¿½ essa aventura!",
                 Targeting = new List<Place>()
                 {
                     new Place()

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
+using WebApi.PushCampaignService.Domain;
 
-namespace WebApi.Services.Implementation
+namespace WebApi.PushCampaignService.DataStore
 {
     public class MockCampaignSimpleDataStore : ISimpleDataStore<Campaign>
     {

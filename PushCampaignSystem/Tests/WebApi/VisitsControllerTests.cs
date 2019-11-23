@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WebApi.Controllers;
 using WebApi.Models;
-using WebApi.Services.Implementation;
+using WebApi.PushCampaignService.DataStore;
 using Xunit;
 
 namespace Tests.WebApi

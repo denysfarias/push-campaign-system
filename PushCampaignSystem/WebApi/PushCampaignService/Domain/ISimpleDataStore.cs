@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApi.Services
+namespace WebApi.PushCampaignService.Domain
 {
     public interface ISimpleDataStore<TData> where TData : class
     {
