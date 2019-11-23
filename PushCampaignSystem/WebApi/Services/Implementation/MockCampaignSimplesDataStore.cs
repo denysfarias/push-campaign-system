@@ -1,12 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
 
 namespace WebApi.Services.Implementation
 {
-    public class MockCampaignSimpleDataStore : ICampaignSimpleDataStore
+    public class MockCampaignSimpleDataStore : ISimpleDataStore<Campaign>
     {
         private readonly List<Campaign> _campaigns;
 
@@ -20,14 +18,11 @@ namespace WebApi.Services.Implementation
             _campaigns = campaigns.ToList();
         }
 
-        public void Load(IEnumerable<Campaign> campaigns)
+        public void Load(IEnumerable<Campaign> data)
         {
-            if (campaigns == null)
-                throw new ArgumentNullException();
-
             //TODO: validate input
 
-            _campaigns.AddRange(campaigns);
+            _campaigns.AddRange(data);
         }
 
         public IEnumerable<Campaign> FindAll()

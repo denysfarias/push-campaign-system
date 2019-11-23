@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using WebApi.Models;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
@@ -12,31 +13,39 @@ namespace WebApi.Controllers
     {
         private readonly ILogger<VisitsController> _logger;
 
-        public VisitsController(ILogger<VisitsController> logger)
+        private readonly ISimpleDataStore<Campaign> _campaignDataStore;
+
+        private readonly ISimpleDataStore<Visit> _visitDataStore;
+
+        public VisitsController(ILogger<VisitsController> logger, ISimpleDataStore<Campaign> campaignDataStore, ISimpleDataStore<Visit> visitDataStore)
         {
             _logger = logger;
+            _campaignDataStore = campaignDataStore;
+            _visitDataStore = visitDataStore;
         }
 
         // GET: api/Visits
         [HttpGet]
-        public ActionResult<IEnumerable<Visit>> Get()
+        public ActionResult<IEnumerable<Visit>> GetAll()
         {
-            throw new NotImplementedException();
+            return _visitDataStore.FindAll().ToList();
         }
 
         // POST: api/Visits/batch/
         [HttpPost]
         [Route("batch")]
-        public ActionResult PostBatch([FromBody] IEnumerable<Visit> value)
+        public ActionResult PostBatch([FromBody] IEnumerable<Visit> visits)
         {
-            throw new NotImplementedException();
+            _visitDataStore.Load(visits);
+            return Ok();
         }
 
-        // DELETE: api/Visits/5
+        // DELETE: api/Visits
         [HttpDelete()]
-        public ActionResult Delete()
+        public ActionResult DeleteAll()
         {
-            throw new NotImplementedException();
+            _visitDataStore.Reset();
+            return Ok();
         }
     }
 }

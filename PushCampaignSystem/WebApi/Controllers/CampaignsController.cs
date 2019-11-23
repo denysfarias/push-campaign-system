@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
@@ -11,24 +10,22 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Produces(MediaTypeNames.Application.Json)]
     public class CampaignsController : ControllerBase
     {
         private readonly ILogger<CampaignsController> _logger;
-        private readonly ICampaignSimpleDataStore _campaignRepository;
+        private readonly ISimpleDataStore<Campaign> _campaignDataStore;
 
-        public CampaignsController(ILogger<CampaignsController> logger, ICampaignSimpleDataStore campaignRepository)
+        public CampaignsController(ILogger<CampaignsController> logger, ISimpleDataStore<Campaign> campaignDataStore)
         {
             _logger = logger;
-            _campaignRepository = campaignRepository;
+            _campaignDataStore = campaignDataStore;
         }
 
         // GET: api/Campaigns
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Campaign>> GetAll()
         {
-            var result = _campaignRepository.FindAll().ToList();
+            var result = _campaignDataStore.FindAll().ToList();
             return result;
         }
 
@@ -37,7 +34,7 @@ namespace WebApi.Controllers
         [Route("batch")]
         public ActionResult PostBatch([FromBody] IEnumerable<Campaign> campaigns)
         {
-            _campaignRepository.Load(campaigns);
+            _campaignDataStore.Load(campaigns);
             return Ok();
         }
 
@@ -45,7 +42,7 @@ namespace WebApi.Controllers
         [HttpDelete()]
         public ActionResult DeleteAll()
         {
-            _campaignRepository.Reset();
+            _campaignDataStore.Reset();
             return Ok();
         }
     }
