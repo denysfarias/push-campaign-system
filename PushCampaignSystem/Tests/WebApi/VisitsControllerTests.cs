@@ -52,8 +52,8 @@ namespace Tests.WebApi
 
             Assert.IsAssignableFrom<OkResult>(response);
             var output = stringBuilder.ToString();
-            Assert.Contains("mixpanel", output);
-            Assert.Contains("localytics", output);
+            Assert.Contains("Mixpanel", output);
+            Assert.Contains("Localytics", output);
         }
 
         //[Fact]

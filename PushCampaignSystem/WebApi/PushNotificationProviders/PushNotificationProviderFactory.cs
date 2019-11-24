@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using WebApi.PushCampaignService.Domain.PushNotificationProvider;
 
 namespace WebApi.PushNotificationProviders
@@ -21,7 +20,7 @@ namespace WebApi.PushNotificationProviders
             if (providerName == "mixpanel")
                 return new MixPanelProvider(_textWriter);
 
-            throw new NotImplementedException();
+            return new NoProvider(_textWriter);
         }
     }
 }

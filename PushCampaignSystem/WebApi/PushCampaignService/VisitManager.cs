@@ -43,7 +43,7 @@ namespace WebApi.PushCampaignService
                 {
                     var provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
 
-                    var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message };
+                    var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message, VisitId = visit.Id };
 
                     provider.PushNotification(payload);
                 }

@@ -15,7 +15,15 @@ namespace WebApi.PushNotificationProviders
 
         public void PushNotification(PushNotificationPayload payload)
         {
-            _textWriter.WriteLine($"{{ message: \"{payload.Message}\", device_id: {payload.DeviceId} }}");
+            var visitDescription = PushNotificationProviderHelper.GetVisitDescription(payload);
+            _textWriter.WriteLine(visitDescription);
+
+            var deviceDescription = PushNotificationProviderHelper.GetDeviceDescription(payload);
+            _textWriter.WriteLine(deviceDescription);
+
+            _textWriter.WriteLine($"===> Localytics logging: {{ \"message\": \"{payload.Message}\", device_id: \"{payload.DeviceId}\" }}");
+
+            _textWriter.WriteLine();
         }
     }
 }
