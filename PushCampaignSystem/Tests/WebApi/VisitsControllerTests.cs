@@ -4,6 +4,7 @@ using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.PushCampaignService;
 using WebApi.PushCampaignService.DataStore;
+using WebApi.PushNotificationProviders;
 using Xunit;
 
 namespace Tests.WebApi
@@ -12,12 +13,15 @@ namespace Tests.WebApi
     {
         private VisitsController SetupController(IEnumerable<Visit> visits = null)
         {
-            var campaigns = CampaignSamples.Get();
-            var campaignDataStore = new MockCampaignStore(campaigns);
-
             var visitDataStore = new MockVisitStore(visits ?? new List<Visit>());
 
-            var manager = new VisitManager(visitDataStore, campaignDataStore);
+            var campaigns = CampaignSamples.Get();
+            var campaignStore = new MockCampaignStore(campaigns);
+            var campaignSearch = new SimpleCampaignSearch(campaignStore);
+
+            var pushNotificationProviderFactory = new PushNotificationProviderFactory();
+
+            var manager = new VisitManager(visitDataStore, campaignSearch, pushNotificationProviderFactory);
 
             return new VisitsController(manager, logger: null);
         }

@@ -2,6 +2,7 @@
 using WebApi.Models;
 using WebApi.PushCampaignService.Domain;
 using WebApi.PushCampaignService.Domain.DataStore;
+using WebApi.PushCampaignService.Domain.PushNotificationProvider;
 
 namespace WebApi.PushCampaignService
 {
@@ -9,12 +10,15 @@ namespace WebApi.PushCampaignService
     {
         private readonly IDataStore<Visit> _visitStore;
 
-        private readonly IDataStore<Campaign> _campaignStore;
+        private readonly ICampaignSearch _campaignSearch;
 
-        public VisitManager(IDataStore<Visit> visitStore, IDataStore<Campaign> campaignStore)
+        private readonly IPushNotificationProviderFactory _pushNotificationProviderFactory;
+
+        public VisitManager(IDataStore<Visit> visitStore, ICampaignSearch campaignSearch, IPushNotificationProviderFactory pushNotificationProviderFactory)
         {
             _visitStore = visitStore;
-            _campaignStore = campaignStore;
+            _campaignSearch = campaignSearch;
+            _pushNotificationProviderFactory = pushNotificationProviderFactory;
         }
 
         public IEnumerable<Visit> GetAll()
@@ -25,6 +29,25 @@ namespace WebApi.PushCampaignService
         public void Load(IEnumerable<Visit> visits)
         {
             _visitStore.Load(visits);
+
+            PushNotifications(visits);
+        }
+
+        private void PushNotifications(IEnumerable<Visit> visits)
+        {
+            foreach (var visit in visits)
+            {
+                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.PlaceId);
+
+                foreach (var pushCampaign in pushCampaignList)
+                {
+                    var provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
+
+                    var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message };
+
+                    provider.PushNotification(payload);
+                }
+            }
         }
     }
 }
