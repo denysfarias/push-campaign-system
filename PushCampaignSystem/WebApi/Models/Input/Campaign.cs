@@ -6,14 +6,14 @@ namespace WebApi.Models
     public class Campaign
     {
         [Range(minimum: 1, maximum: int.MaxValue)]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [Required]
-        public string Provider { get; set; }
+        public string provider { get; set; }
 
         [Required]
-        public string PushMessage { get; set; }
+        public string push_message { get; set; }
 
-        public IEnumerable<Place> Targeting { get; set; }
+        public IEnumerable<Place> targeting { get; set; }
     }
 }

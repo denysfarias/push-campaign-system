@@ -37,13 +37,13 @@ namespace WebApi.PushCampaignService
         {
             foreach (var visit in visits)
             {
-                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.PlaceId);
+                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.place_id);
 
                 foreach (var pushCampaign in pushCampaignList)
                 {
                     var provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
 
-                    var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message, VisitId = visit.Id };
+                    var payload = new PushNotificationPayload() { DeviceId = visit.device_id, Message = pushCampaign.Message, VisitId = visit.id };
 
                     provider.PushNotification(payload);
                 }

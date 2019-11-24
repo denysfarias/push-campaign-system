@@ -17,8 +17,8 @@ namespace WebApi.PushCampaignService.DataStore
         public IEnumerable<PushCampaign> FindMessagesForPlace(int placeId)
         {
             return _campaignStore.FindAll()
-                .Where(campaign => campaign.Targeting.Any(target => target.PlaceId == placeId))
-                .Select(campaign => new PushCampaign() { Message = campaign.PushMessage, Provider = campaign.Provider })
+                .Where(campaign => campaign.targeting.Any(target => target.place_id == placeId))
+                .Select(campaign => new PushCampaign() { Message = campaign.push_message, Provider = campaign.provider })
                 .ToList();
         }
     }

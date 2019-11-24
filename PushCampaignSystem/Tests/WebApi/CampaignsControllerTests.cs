@@ -35,20 +35,20 @@ namespace Tests.WebApi
             var controller = SetupController();
             var campaign = new Campaign()
             {
-                Id = 3,
-                Provider = "Test-Provider-4x4",
-                PushMessage = "Teste j� essa aventura!",
-                Targeting = new List<Place>()
+                id = 3,
+                provider = "Test-Provider-4x4",
+                push_message = "Teste j� essa aventura!",
+                targeting = new List<Place>()
                 {
                     new Place()
                     {
-                        PlaceId = 1,
-                        Name = "Clube do Teste"
+                        place_id = 1,
+                        name = "Clube do Teste"
                     },
                     new Place()
                     {
-                        PlaceId = 2,
-                        Name = "Test Coffee"
+                        place_id = 2,
+                        name = "Test Coffee"
                     }
                 }
             };

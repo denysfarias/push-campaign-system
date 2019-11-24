@@ -14,44 +14,44 @@ namespace Tests.WebApi
             {
                 new Campaign()
                 {
-                    Id = 1,
-                    Provider = "localytics",
-                    PushMessage = "70% OFF! Order our best pizza: In Loco Pizza!",
-                    Targeting = new List<Place>()
+                    id = 1,
+                    provider = "localytics",
+                    push_message = "70% OFF! Order our best pizza: In Loco Pizza!",
+                    targeting = new List<Place>()
                     {
                         new Place()
                         {
-                            PlaceId = 79,
-                            Name = "In Loco Pizzas – Recife Antigo"
+                            place_id = 79,
+                            name = "In Loco Pizzas – Recife Antigo"
                         },
                         new Place()
                         {
-                            PlaceId = 22,
-                            Name = "In Loco Pizzas – Casa Forte"
+                            place_id = 22,
+                            name = "In Loco Pizzas – Casa Forte"
                         }
                     }
                 },
                 new Campaign()
                 {
-                    Id = 2,
-                    Provider = "mixpanel",
-                    PushMessage = "Peça o drink do dia! Se beber, não dirija. :)",
-                    Targeting = new List<Place>()
+                    id = 2,
+                    provider = "mixpanel",
+                    push_message = "Peça o drink do dia! Se beber, não dirija. :)",
+                    targeting = new List<Place>()
                     {
                         new Place()
                         {
-                            PlaceId = 33,
-                            Name = "Bar da esquina"
+                            place_id = 33,
+                            name = "Bar da esquina"
                         },
                         new Place()
                         {
-                            PlaceId = 90,
-                            Name = "In Loco Drinks Bar"
+                            place_id = 90,
+                            name = "In Loco Drinks Bar"
                         },
                         new Place()
                         {
-                            PlaceId = 7624,
-                            Name = "In Loco Restaurante"
+                            place_id = 7624,
+                            name = "In Loco Restaurante"
                         }
                     }
                 }

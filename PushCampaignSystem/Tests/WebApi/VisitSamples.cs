@@ -14,27 +14,27 @@ namespace Tests.WebApi
             {
                 new Visit()
                 {
-                    Id = 8623,
-                    DeviceId = "dev92364",
-                    PlaceId = 79
+                    id = 8623,
+                    device_id = "dev92364",
+                    place_id = 79
                 },
                 new Visit()
                 {
-                    Id = 2274,
-                    DeviceId = "uid6244",
-                    PlaceId = 10
+                    id = 2274,
+                    device_id = "uid6244",
+                    place_id = 10
                 },
                 new Visit()
                 {
-                    Id = 12,
-                    DeviceId = "ale835",
-                    PlaceId = 22
+                    id = 12,
+                    device_id = "ale835",
+                    place_id = 22
                 },
                 new Visit()
                 {
-                    Id = 632984,
-                    DeviceId = "oery926",
-                    PlaceId = 90
+                    id = 632984,
+                    device_id = "oery926",
+                    place_id = 90
                 }
             };
     }

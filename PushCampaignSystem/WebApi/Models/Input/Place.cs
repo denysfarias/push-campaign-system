@@ -5,9 +5,9 @@ namespace WebApi.Models
     public class Place
     {
         [Range(minimum: 1, maximum: int.MaxValue)]
-        public int PlaceId { get; set; }
+        public int place_id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 }

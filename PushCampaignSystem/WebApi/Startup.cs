@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.IO;
 using WebApi.Controllers;
@@ -31,11 +30,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson(options =>
-                {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver() { NamingStrategy = new SnakeCaseNamingStrategy() };
-                });
+            services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -47,13 +42,14 @@ namespace WebApi
             services.AddSingleton(typeof(ILogger<CampaignsController>), typeof(Logger<CampaignsController>));
             services.AddSingleton(typeof(ILogger<VisitsController>), typeof(Logger<VisitsController>));
 
-            services.AddTransient<ICampaignManager, CampaignManager>();
-            services.AddTransient<IVisitManager, VisitManager>();
-            services.AddTransient<IDataStore<Campaign>, MockCampaignStore>();
-            services.AddTransient<IDataStore<Visit>, MockVisitStore>();
-            services.AddTransient<ICampaignSearch, SimpleCampaignSearch>();
-            services.AddTransient<IPushNotificationProviderFactory, PushNotificationProviderFactory>();
-            services.AddTransient<TextWriter>(service => Console.Out);
+            // Singleton while without stateless versions
+            services.AddSingleton<ICampaignManager, CampaignManager>();
+            services.AddSingleton<IVisitManager, VisitManager>();
+            services.AddSingleton<IDataStore<Campaign>, MockCampaignStore>();
+            services.AddSingleton<IDataStore<Visit>, MockVisitStore>();
+            services.AddSingleton<ICampaignSearch, SimpleCampaignSearch>();
+            services.AddSingleton<IPushNotificationProviderFactory, PushNotificationProviderFactory>();
+            services.AddSingleton<TextWriter>(service => Console.Out);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
