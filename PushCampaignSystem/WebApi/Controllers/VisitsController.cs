@@ -8,6 +8,7 @@ using WebApi.PushCampaignService.Domain;
 namespace WebApi.Controllers
 {
     [ApiController]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [Route("[controller]")]
     public class VisitsController : ControllerBase
     {
@@ -21,6 +22,10 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets all visits.
+        /// </summary>
+        /// <returns>All previous visits</returns>
         // GET: api/Visits
         [HttpGet]
         public ActionResult<IEnumerable<Visit>> GetAll()
@@ -28,6 +33,12 @@ namespace WebApi.Controllers
             return _visitManager.GetAll().ToList();
         }
 
+        /// <summary>
+        /// Loads visits in batch, push associated notifications.
+        /// Ids attribution by client.
+        /// </summary>
+        /// <param name="visits"></param>
+        /// <returns>Nothing</returns>
         // POST: api/Visits/batch/
         [HttpPost]
         [Route("batch")]

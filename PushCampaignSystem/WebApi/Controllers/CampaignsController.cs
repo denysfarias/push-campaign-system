@@ -8,6 +8,7 @@ using WebApi.PushCampaignService.Domain;
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiController]
     public class CampaignsController : ControllerBase
     {
@@ -20,6 +21,10 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets all campaigns.
+        /// </summary>
+        /// <returns>All active campaigns</returns>
         // GET: api/Campaigns
         [HttpGet]
         public ActionResult<IEnumerable<Campaign>> GetAll()
@@ -28,6 +33,12 @@ namespace WebApi.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Loads campaigns in batch. 
+        /// Ids attribution by client.
+        /// </summary>
+        /// <param name="campaigns"></param>
+        /// <returns>Nothing</returns>
         // POST: api/Campaigns/batch/
         [HttpPost]
         [Route("batch")]
