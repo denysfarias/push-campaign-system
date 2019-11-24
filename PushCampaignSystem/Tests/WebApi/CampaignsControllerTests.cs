@@ -26,7 +26,7 @@ namespace Tests.WebApi
             var response = controller.GetAll();
 
             var responseValue = Assert.IsAssignableFrom<IEnumerable<Campaign>>(response.Value);
-            Assert.NotNull(responseValue);
+            Assert.NotEmpty(responseValue);
         }
 
         [Fact]
