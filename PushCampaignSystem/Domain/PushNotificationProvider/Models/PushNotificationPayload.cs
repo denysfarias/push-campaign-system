@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models
+﻿namespace Domain.PushNotificationProvider.Models
 {
     public class PushNotificationPayload
     {

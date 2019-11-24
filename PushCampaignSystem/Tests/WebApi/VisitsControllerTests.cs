@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using WebApi.Controllers;
 using WebApi.Models;
@@ -15,9 +16,11 @@ namespace Tests.WebApi
     {
         private VisitsController SetupController(IEnumerable<Visit> visits = null, StringBuilder stringBuilder = null)
         {
-            var visitDataStore = new MockVisitStore(visits ?? new List<Visit>());
+            visits = visits ?? new List<Visit>();
 
-            var campaigns = CampaignSamples.Get();
+            var visitDataStore = new MockVisitStore(visits.Select(model => VisitMapper.ToEntity(model)).ToList());
+
+            var campaigns = CampaignSamples.Get().Select(model => CampaignMapper.ToEntity(model)).ToList();
             var campaignStore = new MockCampaignStore(campaigns);
             var campaignSearch = new SimpleCampaignSearch(campaignStore);
             var stringWriter = new StringWriter(stringBuilder ?? new StringBuilder());

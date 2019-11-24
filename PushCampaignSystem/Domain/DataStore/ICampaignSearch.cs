@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using WebApi.Models;
+﻿using Domain.PushNotificationProvider.Models;
+using System.Collections.Generic;
 
-namespace WebApi.PushCampaignService.Domain.DataStore
+namespace Domain.DataStore
 {
     public interface ICampaignSearch
     {

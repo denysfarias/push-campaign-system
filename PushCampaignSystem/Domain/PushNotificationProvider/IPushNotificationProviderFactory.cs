@@ -1,4 +1,4 @@
-﻿namespace WebApi.PushCampaignService.Domain.PushNotificationProvider
+﻿namespace Domain.PushNotificationProvider
 {
     public interface IPushNotificationProviderFactory
     {

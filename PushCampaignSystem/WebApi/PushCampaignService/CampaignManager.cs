@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using WebApi.Models;
-using WebApi.PushCampaignService.Domain;
-using WebApi.PushCampaignService.Domain.DataStore;
+﻿using Domain.DataStore;
+using Domain.DataStore.Entities;
+using Domain.Services;
+using System.Collections.Generic;
 
 namespace WebApi.PushCampaignService
 {

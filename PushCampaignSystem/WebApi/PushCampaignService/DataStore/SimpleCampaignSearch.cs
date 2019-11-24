@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Domain.DataStore;
+using Domain.DataStore.Entities;
+using Domain.PushNotificationProvider.Models;
+using System.Collections.Generic;
 using System.Linq;
-using WebApi.Models;
-using WebApi.PushCampaignService.Domain.DataStore;
 
 namespace WebApi.PushCampaignService.DataStore
 {
@@ -17,8 +18,8 @@ namespace WebApi.PushCampaignService.DataStore
         public IEnumerable<PushCampaign> FindMessagesForPlace(int placeId)
         {
             return _campaignStore.FindAll()
-                .Where(campaign => campaign.targeting.Any(target => target.place_id == placeId))
-                .Select(campaign => new PushCampaign() { Message = campaign.push_message, Provider = campaign.provider })
+                .Where(campaign => campaign.Targeting.Any(target => target.PlaceId == placeId))
+                .Select(campaign => new PushCampaign() { Message = campaign.PushMessage, Provider = campaign.Provider })
                 .ToList();
         }
     }

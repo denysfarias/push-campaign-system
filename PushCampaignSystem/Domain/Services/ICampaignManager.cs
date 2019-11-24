@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using WebApi.Models;
+﻿using Domain.DataStore.Entities;
+using System.Collections.Generic;
 
-namespace WebApi.PushCampaignService.Domain
+namespace Domain.Services
 {
     public interface ICampaignManager
     {

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using WebApi.Models;
-using WebApi.PushCampaignService.Domain;
 
 namespace WebApi.Controllers
 {
@@ -29,7 +29,9 @@ namespace WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Campaign>> GetAll()
         {
-            var result = _campaignManager.GetAll().ToList();
+            var result = _campaignManager.GetAll()
+                .Select(entity => CampaignMapper.ToModel(entity))
+                .ToList();
             return result;
         }
 
@@ -44,7 +46,8 @@ namespace WebApi.Controllers
         [Route("batch")]
         public ActionResult PostBatch([FromBody] IEnumerable<Campaign> campaigns)
         {
-            _campaignManager.Load(campaigns);
+            var entities = campaigns.Select(model => CampaignMapper.ToEntity(model)).ToList();
+            _campaignManager.Load(entities);
             return Ok();
         }
 

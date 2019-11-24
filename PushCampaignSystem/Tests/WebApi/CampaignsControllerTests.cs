@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.PushCampaignService;
@@ -12,7 +13,7 @@ namespace Tests.WebApi
     {
         private CampaignsController SetupController()
         {
-            var samples = CampaignSamples.Get();
+            var samples = CampaignSamples.Get().Select(model => CampaignMapper.ToEntity(model)).ToList();
             var dataStore = new MockCampaignStore(samples);
             var manager = new CampaignManager(dataStore);
             return new CampaignsController(manager, logger: null);

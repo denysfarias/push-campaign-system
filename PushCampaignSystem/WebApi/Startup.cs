@@ -1,3 +1,6 @@
+using Domain.DataStore;
+using Domain.PushNotificationProvider;
+using Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,10 +14,8 @@ using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.PushCampaignService;
 using WebApi.PushCampaignService.DataStore;
-using WebApi.PushCampaignService.Domain;
-using WebApi.PushCampaignService.Domain.DataStore;
-using WebApi.PushCampaignService.Domain.PushNotificationProvider;
 using WebApi.PushNotificationProviders;
+using Entities = Domain.DataStore.Entities;
 
 namespace WebApi
 {
@@ -45,8 +46,8 @@ namespace WebApi
             // Singleton while without stateless versions
             services.AddSingleton<ICampaignManager, CampaignManager>();
             services.AddSingleton<IVisitManager, VisitManager>();
-            services.AddSingleton<IDataStore<Campaign>, MockCampaignStore>();
-            services.AddSingleton<IDataStore<Visit>, MockVisitStore>();
+            services.AddSingleton<IDataStore<Entities.Campaign>, MockCampaignStore>();
+            services.AddSingleton<IDataStore<Entities.Visit>, MockVisitStore>();
             services.AddSingleton<ICampaignSearch, SimpleCampaignSearch>();
             services.AddSingleton<IPushNotificationProviderFactory, PushNotificationProviderFactory>();
             services.AddSingleton<TextWriter>(service => Console.Out);

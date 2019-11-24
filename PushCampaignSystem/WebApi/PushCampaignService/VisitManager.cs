@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using WebApi.Models;
-using WebApi.PushCampaignService.Domain;
-using WebApi.PushCampaignService.Domain.DataStore;
-using WebApi.PushCampaignService.Domain.PushNotificationProvider;
+﻿using Domain.DataStore;
+using Domain.DataStore.Entities;
+using Domain.PushNotificationProvider;
+using Domain.PushNotificationProvider.Models;
+using Domain.Services;
+using System.Collections.Generic;
 
 namespace WebApi.PushCampaignService
 {
@@ -37,13 +38,13 @@ namespace WebApi.PushCampaignService
         {
             foreach (var visit in visits)
             {
-                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.place_id);
+                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.PlaceId);
 
                 foreach (var pushCampaign in pushCampaignList)
                 {
                     var provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
 
-                    var payload = new PushNotificationPayload() { DeviceId = visit.device_id, Message = pushCampaign.Message, VisitId = visit.id };
+                    var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message, VisitId = visit.Id };
 
                     provider.PushNotification(payload);
                 }

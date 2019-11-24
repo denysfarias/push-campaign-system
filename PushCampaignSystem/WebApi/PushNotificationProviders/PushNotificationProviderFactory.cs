@@ -1,5 +1,5 @@
-﻿using System.IO;
-using WebApi.PushCampaignService.Domain.PushNotificationProvider;
+﻿using Domain.PushNotificationProvider;
+using System.IO;
 
 namespace WebApi.PushNotificationProviders
 {

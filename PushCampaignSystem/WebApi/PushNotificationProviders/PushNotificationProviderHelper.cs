@@ -1,4 +1,4 @@
-﻿using WebApi.Models;
+﻿using Domain.PushNotificationProvider.Models;
 
 namespace WebApi.PushNotificationProviders
 {
