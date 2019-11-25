@@ -12,6 +12,8 @@ namespace IndexCampaignWorker
 {
     class Program
     {
+        private const bool VERBOSE = false;
+
         private static readonly string CONSOLE_TITLE = "INDEX CAMPAIGN WORKER";
 
         private static ICampaignIndexer _campaignIndexer;
@@ -24,7 +26,10 @@ namespace IndexCampaignWorker
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Title = CONSOLE_TITLE;
                 Console.WriteLine($" [--- {CONSOLE_TITLE} ---]");
-                Console.WriteLine(" [*] Waiting for messages.");
+                if (VERBOSE)
+                {
+                    Console.WriteLine(" [*] Waiting for messages.");
+                }
 
                 _campaignIndexer = new CampaignIndexer(setCache);
 
@@ -37,22 +42,31 @@ namespace IndexCampaignWorker
                     return;
                 }
 
-                Console.WriteLine(" Press [enter] any time to exit.");
+                if (VERBOSE)
+                {
+                    Console.WriteLine(" Press [enter] any time to exit.");
+                }
                 Console.ReadLine();
             }
         }
 
         public static async Task HandleData(Campaign campaign, AckHandler ackHandler, NackHandler nackHandler)
         {
-            Console.WriteLine($" [-] Campaign {campaign.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            if (VERBOSE)
+            {
+                Console.WriteLine($" [-] Campaign {campaign.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            }
 
             var indexingResult = await _campaignIndexer.IndexCampaignAsync(campaign);
 
             if (indexingResult.Notifications.Any())
             {
-                foreach (var notification in indexingResult.Notifications)
+                if (VERBOSE)
                 {
-                    Console.WriteLine($" [-] {notification.Message} at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+                    foreach (var notification in indexingResult.Notifications)
+                    {
+                        Console.WriteLine($" [-] {notification.Message} at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+                    }
                 }
 
                 if (indexingResult.IsInvalid)
@@ -63,7 +77,10 @@ namespace IndexCampaignWorker
 
             }
 
-            Console.WriteLine($" [x] Campaign {campaign.Id} DONE indexing at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            if (VERBOSE)
+            {
+                Console.WriteLine($" [x] Campaign {campaign.Id} DONE indexing at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            }
             
             ackHandler();
         }

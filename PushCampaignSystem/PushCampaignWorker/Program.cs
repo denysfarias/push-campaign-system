@@ -13,6 +13,8 @@ namespace PushCampaignWorker
 {
     class Program
     {
+        private const bool VERBOSE = false;
+
         private static readonly string CONSOLE_TITLE = "PUSH CAMPAIGN WORKER";
 
         private static ICampaignPusher _campaignPusher;        
@@ -25,7 +27,10 @@ namespace PushCampaignWorker
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Title = CONSOLE_TITLE;
                 Console.WriteLine($" [--- {CONSOLE_TITLE} ---]");
-                Console.WriteLine(" [*] Waiting for messages.");
+                if (VERBOSE)
+                {
+                    Console.WriteLine(" [*] Waiting for messages.");
+                }
 
                 var pushNotificationProviderFactory = new PushNotificationProviderFactory(Console.Out);
                 _campaignPusher = new CampaignPusher(setCache, pushNotificationProviderFactory);
@@ -39,22 +44,31 @@ namespace PushCampaignWorker
                     return;
                 }
 
-                Console.WriteLine(" Press [enter] any time to exit.");
+                if (VERBOSE)
+                {
+                    Console.WriteLine(" Press [enter] any time to exit.");
+                }
                 Console.ReadLine();
             }
         }
 
         public static async Task HandleData(Visit visit, AckHandler ackHandler, NackHandler nackHandler)
         {
-            Console.WriteLine($" [-] Vist {visit.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            if (VERBOSE)
+            {
+                Console.WriteLine($" [-] Vist {visit.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            }
 
             var pushingResult = await _campaignPusher.PushCampaignAsync(visit);
 
             if (pushingResult.Notifications.Any())
             {
-                foreach (var notification in pushingResult.Notifications)
+                if (VERBOSE)
                 {
-                    Console.WriteLine($" [-] {notification.Message} at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+                    foreach (var notification in pushingResult.Notifications)
+                    {
+                        Console.WriteLine($" [-] {notification.Message} at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+                    }
                 }
 
                 if (pushingResult.IsInvalid)
@@ -64,7 +78,10 @@ namespace PushCampaignWorker
                 }
             }
 
-            Console.WriteLine($" [x] Visit {visit.Id} DONE pushing campaign at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            if (VERBOSE)
+            {
+                Console.WriteLine($" [x] Visit {visit.Id} DONE pushing campaign at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
+            }
 
             ackHandler();
         }
