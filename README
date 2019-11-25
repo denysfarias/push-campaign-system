@@ -8,7 +8,7 @@ The system is composed of the following modules, in the order of the data flow:
 
 ### RESTful WebAPI
 
-The campaigns and visits are loaded through a simple RESTful API, made with ASP.NET Core 3.0 This module contains all the logic of routes, controllers, data models, and data managers. Data managers work as services modules, handling other tools at a high level of abstraction, connecting campaign indexers and retrievers, and data stores.
+The campaigns and visits are loaded in JSON format through a simple RESTful API, made with ASP.NET Core 3.0 This module contains all the logic of routes, controllers, data models, and data managers. Data managers work as services modules, handling other tools at a high level of abstraction, connecting campaign indexers and retrievers, and data stores.
 
 The configuration of managers and tools are made via Dependency Injection. For example, there are versions of simple managers, which operate over local mocks, as well as distributed versions of managers that delegate part of the processing to separate service workers. The distributed managers communicate with service workers through the message queue module, to operate asynchronously.
 
