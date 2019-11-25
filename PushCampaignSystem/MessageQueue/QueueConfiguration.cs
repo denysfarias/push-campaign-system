@@ -1,7 +1,4 @@
-﻿using Domain.MessageQueue;
-using System;
-
-namespace MessageQueue
+﻿namespace MessageQueue
 {
     public class QueueConfiguration
     {
