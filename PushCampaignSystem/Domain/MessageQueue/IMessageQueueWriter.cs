@@ -6,6 +6,6 @@ namespace Domain.MessageQueue
     public interface IMessageQueueWriter<T> where T : class
     {
         CommandNotification Post(T content);
-        CommandNotification Post(IList<T> content);
+        CommandNotification Post(IEnumerable<T> content);
     }
 }

@@ -29,10 +29,12 @@ namespace IndexCampaignWorker
 
                 var payload = JsonConvert.SerializeObject(pushCampaign);
 
-                var result = await _setCache.AddOrAppend(placeId.ToString(), payload);
+                var addResult = await _setCache.AddOrAppend(placeId.ToString(), payload);
 
-                if (result.IsInvalid)
-                    return result;
+                if (addResult.IsInvalid)
+                    return addResult;
+
+                //var getResult = await _setCache.GetAll(placeId.ToString()); // Testing           
             }
 
             return new CommandNotification();

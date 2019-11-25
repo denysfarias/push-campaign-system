@@ -23,10 +23,7 @@ namespace Caching
             var db = _redis.GetDatabase();
             var added = await db.SetAddAsync(key, value);
             
-            if (!added)
-                return new CommandNotification(property: key, message: $"Value could not be stored in cache.", level: Domain.Notifications.Level.Error);
-
-            throw new NotImplementedException();
+            return new CommandNotification();
         }
 
         public async Task<ObjectWithNotification<IEnumerable<string>>> GetAll(string key)
@@ -35,7 +32,7 @@ namespace Caching
 
             var values = await db.SetMembersAsync(key);
 
-            var realValues = values.Cast<string>().ToList();
+            var realValues = values.Select(value => (string)value).ToList();
 
             return new ObjectWithNotification<IEnumerable<string>>(realValues);
         }

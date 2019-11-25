@@ -1,6 +1,8 @@
 using Domain.DataStore;
+using Domain.MessageQueue;
 using Domain.PushNotificationProvider;
 using Domain.Services;
+using MessageQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -44,13 +46,14 @@ namespace WebApi
             services.AddSingleton(typeof(ILogger<VisitsController>), typeof(Logger<VisitsController>));
 
             // Singleton while without stateless versions
-            services.AddSingleton<ICampaignManager, CampaignManager>();
+            services.AddSingleton<ICampaignManager, DistributedCampaignManager>();
             services.AddSingleton<IVisitManager, VisitManager>();
             services.AddSingleton<IDataStore<Entities.Campaign>, MockCampaignStore>();
             services.AddSingleton<IDataStore<Entities.Visit>, MockVisitStore>();
             services.AddSingleton<ICampaignSearch, SimpleCampaignSearch>();
             services.AddSingleton<IPushNotificationProviderFactory, PushNotificationProviderFactory>();
             services.AddSingleton<TextWriter>(service => Console.Out);
+            services.AddSingleton<MessageQueueWriterResolver>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

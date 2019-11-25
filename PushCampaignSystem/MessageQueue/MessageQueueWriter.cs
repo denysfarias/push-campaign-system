@@ -27,7 +27,7 @@ namespace MessageQueue
             });
         }
 
-        public CommandNotification Post(IList<T> contentList)
+        public CommandNotification Post(IEnumerable<T> contentList)
         {
             return PostCommon(channel =>
             {
