@@ -4,7 +4,7 @@ This is a project requested as part of the In Loco screening process.  The objec
 
 ## Code Design
 
-The system is composed of the following modules, in the order of the data flow:
+The system is composed of the following modules, in the order of the data flow below. As the requirement focus is on the processing and delivery of notifications, it was not used a real database for analytics, although the mocks are  easily replaceable.
 
 ### RESTful WebAPI
 
@@ -36,7 +36,7 @@ This module abstracts the implementation details of the push notification provid
 
 ### Domain Module
 
-This is the reference module for all the other projects. It defines interfaces and models necessary for projects interoperability, and a base notification structure for better handling validations and some exceptions.
+This is the reference module for all the other projects. It defines interfaces and models necessary for projects interoperability and easier replacement of tooling, as well as a base notification structure for better handling validations and some exceptions.
 
 ### Tests Project
 
