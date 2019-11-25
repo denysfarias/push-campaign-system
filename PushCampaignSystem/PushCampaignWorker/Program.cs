@@ -23,7 +23,7 @@ namespace PushCampaignWorker
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Title = CONSOLE_TITLE;
-                Console.WriteLine($" [---------------------------------{CONSOLE_TITLE}---------------------------------]");
+                Console.WriteLine($" [--- {CONSOLE_TITLE} ---]");
                 Console.WriteLine(" [*] Waiting for messages.");
 
                 var pushNotificationProviderFactory = new PushNotificationProviderFactory(Console.Out);
@@ -38,7 +38,7 @@ namespace PushCampaignWorker
                     return;
                 }
 
-                Console.WriteLine(" Press [enter] to exit.");
+                Console.WriteLine(" Press [enter] any time to exit.");
                 Console.ReadLine();
             }
         }

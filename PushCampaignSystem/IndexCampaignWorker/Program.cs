@@ -22,7 +22,7 @@ namespace IndexCampaignWorker
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Title = CONSOLE_TITLE;
-                Console.WriteLine($" [---------------------------------{CONSOLE_TITLE}---------------------------------]");
+                Console.WriteLine($" [--- {CONSOLE_TITLE} ---]");
                 Console.WriteLine(" [*] Waiting for messages.");
 
                 _campaignIndexer = new CampaignIndexer(setCache);
@@ -36,7 +36,7 @@ namespace IndexCampaignWorker
                     return;
                 }
 
-                Console.WriteLine(" Press [enter] to exit.");
+                Console.WriteLine(" Press [enter] any time to exit.");
                 Console.ReadLine();
             }
         }

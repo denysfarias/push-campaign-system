@@ -5,6 +5,7 @@ using Domain.PushNotificationProvider;
 using Domain.PushNotificationProvider.Models;
 using Domain.Services;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,18 @@ namespace PushCampaignWorker
 
             var pushCampaigns = readCacheResult.Object
                 .Select(raw => JsonConvert.DeserializeObject<PushCampaign>(raw));
+
+            if (!pushCampaigns.Any())
+            {
+                pushCampaigns = new List<PushCampaign>()
+                {
+                    new PushCampaign()
+                    {
+                        Message = string.Empty,
+                        Provider = string.Empty
+                    }
+                };
+            }
 
             IPushNotificationProvider provider;
             PushNotificationPayload payload;

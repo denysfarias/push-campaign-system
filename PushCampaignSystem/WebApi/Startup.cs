@@ -44,7 +44,7 @@ namespace WebApi
 
             // Singleton while without stateless versions
             services.AddSingleton<ICampaignManager, DistributedCampaignManager>();
-            services.AddSingleton<IVisitManager, VisitManager>();
+            services.AddSingleton<IVisitManager, DistributedVisitManager>();
             services.AddSingleton<IDataStore<Entities.Campaign>, MockCampaignStore>();
             services.AddSingleton<IDataStore<Entities.Visit>, MockVisitStore>();
             services.AddSingleton<ICampaignSearch, SimpleCampaignSearch>();
