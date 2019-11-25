@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\MessageQueue\MessageQueue.csproj" />
+    <ProjectReference Include="..\PushNotificationProvider\PushNotificationProvider.csproj" />
   </ItemGroup>
 
 </Project>

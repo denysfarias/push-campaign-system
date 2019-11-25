@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PushNotificationProvider;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,6 @@ using WebApi.Controllers;
 using WebApi.Models;
 using WebApi.PushCampaignService;
 using WebApi.PushCampaignService.DataStore;
-using WebApi.PushNotificationProviders;
 using Xunit;
 
 namespace Tests.WebApi

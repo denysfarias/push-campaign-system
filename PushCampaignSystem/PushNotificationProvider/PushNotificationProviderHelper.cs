@@ -1,6 +1,6 @@
 ﻿using Domain.PushNotificationProvider.Models;
 
-namespace WebApi.PushNotificationProviders
+namespace PushNotificationProvider
 {
     public static class PushNotificationProviderHelper
     {

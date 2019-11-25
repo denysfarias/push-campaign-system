@@ -2,7 +2,7 @@
 using Domain.PushNotificationProvider.Models;
 using System.IO;
 
-namespace WebApi.PushNotificationProviders
+namespace PushNotificationProvider
 {
     public class NoProvider : IPushNotificationProvider
     {

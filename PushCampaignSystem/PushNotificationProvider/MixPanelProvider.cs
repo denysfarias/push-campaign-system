@@ -2,13 +2,13 @@
 using Domain.PushNotificationProvider.Models;
 using System.IO;
 
-namespace WebApi.PushNotificationProviders
+namespace PushNotificationProvider
 {
-    public class LocalyticsProvider : IPushNotificationProvider
+    public class MixPanelProvider : IPushNotificationProvider
     {
         private readonly TextWriter _textWriter;
 
-        public LocalyticsProvider(TextWriter textWriter)
+        public MixPanelProvider(TextWriter textWriter)
         {
             _textWriter = textWriter;
         }
@@ -21,7 +21,7 @@ namespace WebApi.PushNotificationProviders
             var deviceDescription = PushNotificationProviderHelper.GetDeviceDescription(payload);
             _textWriter.WriteLine(deviceDescription);
 
-            _textWriter.WriteLine($"===> Localytics logging: {{ \"message\": \"{payload.Message}\", device_id: \"{payload.DeviceId}\" }}");
+            _textWriter.WriteLine($"===> Mixpanel logging: Olar! {payload.Message}");
 
             _textWriter.WriteLine();
         }

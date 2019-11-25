@@ -1,8 +1,6 @@
 using Domain.DataStore;
-using Domain.MessageQueue;
 using Domain.PushNotificationProvider;
 using Domain.Services;
-using MessageQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,13 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PushNotificationProvider;
 using System;
 using System.IO;
 using WebApi.Controllers;
-using WebApi.Models;
 using WebApi.PushCampaignService;
 using WebApi.PushCampaignService.DataStore;
-using WebApi.PushNotificationProviders;
 using Entities = Domain.DataStore.Entities;
 
 namespace WebApi

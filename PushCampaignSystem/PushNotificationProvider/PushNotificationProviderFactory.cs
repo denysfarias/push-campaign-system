@@ -1,7 +1,7 @@
 ﻿using Domain.PushNotificationProvider;
 using System.IO;
 
-namespace WebApi.PushNotificationProviders
+namespace PushNotificationProvider
 {
     public class PushNotificationProviderFactory : IPushNotificationProviderFactory
     {
