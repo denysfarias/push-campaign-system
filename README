@@ -1,0 +1,51 @@
+# Push Campaign System
+
+This is a project requested as part of the In Loco screening process.  The objective of this project is to manage push notifications according to ad campaigns and device geolocalization (visits) reports. The details and requirements are described in the specification document.
+
+## Code Design
+
+The system is composed of the following modules, in the order of the data flow:
+
+### RESTful WebAPI
+
+The campaigns and visits are loaded through a simple RESTful API, made with ASP.NET Core 3.0 This module contains all the logic of routes, controllers, data models, and data managers. Data managers work as services modules, handling other tools at a high level of abstraction, connecting campaign indexers and retrievers, and data stores.
+
+The configuration of managers and tools are made via Dependency Injection. For example, there are versions of simple managers, which operate over local mocks, as well as distributed versions of managers that delegate part of the processing to separate service workers. The distributed managers communicate with service workers through the message queue module, to operate asynchronously.
+
+Swagger is available in the root URI, for manual ease of use.
+
+### Index Campaign Service Worker
+
+This is a standalone service that gets posted campaigns from his queue and indexes its places on a fast in-memory data store, handled by the caching module. The service is hooked to the queue in an asynchronous mode, allowing for more throughput. In case of need, the service can be scaled horizontally.
+
+### Push Campaign Service Worker
+
+When a visit is posted, this is the service worker responsible for fetching the matched push campaigns from the index data store and send to the push notification providers, according to what is specified in each campaign. The worker sends visits for a default provider in case of not finding targeted campaigns. The same way the other workers, this is a standalone service enabled for horizontal scaling.
+
+### Caching Module
+
+This module is responsible for the details of the initialization and handling of the index data store. The chosen tool for this project is REDIS, for being a good fit for this responsibility. Although it is an in-memory data store, it is possible to configure disk persistence, in case of not operating with a database.
+
+### Message Queue Module
+
+This module handles the details of reading and writing to queues, as well as serializing and deserializing objects. The tool used for this is RabbitMQ, as it serves well the module objective.
+
+### Push Notification Providers Module
+
+This module abstracts the implementation details of the push notification providers. In this project, all providers simulate their processing printing messages only.
+
+### Domain Module
+
+This is the reference module for all the other projects. It defines interfaces and models necessary for projects interoperability, and a base notification structure for better handling validations and some exceptions.
+
+### Tests Project
+
+This is a basic testing project, where the WebAPI could be tested with local managers and informed sample data. The testing of distributed versions was not implemented in time.
+
+## Future Work
+Authentication/Authorization services integration;
+Application monitoring integration and better log support;
+Long-term database integration, for data analytics;
+Rich domain entities;
+Testing of distributed manager versions;
+Organization of literal strings in resources;
