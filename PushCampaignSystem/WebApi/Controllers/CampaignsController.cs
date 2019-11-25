@@ -1,4 +1,5 @@
-﻿using Domain.Services;
+﻿using Domain.Notifications.DataTransferObjects;
+using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -50,11 +51,16 @@ namespace WebApi.Controllers
         [Route("batch")]
         public ActionResult PostBatch([FromBody] IEnumerable<Campaign> campaigns)
         {
+            var validations = campaigns.Select(campaign => campaign.Validate()).ToArray();
+            var summaryValidation = new CommandNotification(validations);
+            if (summaryValidation.IsInvalid)
+                return StatusCode(500, summaryValidation.Notifications);
+
             var entities = campaigns.Select(model => CampaignMapper.ToEntity(model)).ToList();
             var result =_campaignManager.Load(entities);
 
             if (result.IsInvalid)
-                return new StatusCodeResult(500);
+                return StatusCode(500, result.Notifications);
 
             return Ok();
         }

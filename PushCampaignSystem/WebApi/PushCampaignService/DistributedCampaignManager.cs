@@ -25,12 +25,12 @@ namespace WebApi.PushCampaignService
         }
 
         public CommandNotification Load(IEnumerable<Campaign> campaigns)
-        {
-            var indexingResult = _indexCampaignQueueWriter.Post(campaigns);
-            if (indexingResult.IsInvalid)
-                return indexingResult;
+        {            
+            var result = _campaignStore.Load(campaigns);
+            if (result.IsInvalid)
+                return result;
 
-            return _campaignStore.Load(campaigns);
+            return _indexCampaignQueueWriter.Post(campaigns);
         }
     }
 }

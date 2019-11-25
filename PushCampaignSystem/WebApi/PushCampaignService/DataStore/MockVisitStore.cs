@@ -22,7 +22,10 @@ namespace WebApi.PushCampaignService.DataStore
 
         public CommandNotification Load(IEnumerable<Visit> data)
         {
-            //TODO: validate input
+            var hasDuplicate = _visits.Any(stored => data.Any(toStore => stored.Id == toStore.Id));
+
+            if (hasDuplicate)
+                return new CommandNotification(property: string.Empty, message: "Remove duplicate visit to proceed.", level: Domain.Notifications.Level.Error);
 
             _visits.AddRange(data);
             return new CommandNotification();

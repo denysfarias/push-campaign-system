@@ -26,12 +26,11 @@ namespace WebApi.PushCampaignService
 
         public CommandNotification Load(IEnumerable<Visit> visits)
         {
-            var result = _pushCampaignQueueWriter.Post(visits);
-
+            var result = _visitStore.Load(visits);
             if (result.IsInvalid)
                 return result;
 
-            return _visitStore.Load(visits);
+            return _pushCampaignQueueWriter.Post(visits);
         }
     }
 }
