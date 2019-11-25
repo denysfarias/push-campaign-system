@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Notifications.DataTransferObjects;
+using System;
 
 namespace Domain.MessageQueue
 {
@@ -8,7 +9,7 @@ namespace Domain.MessageQueue
 
     public interface IMessageQueueReader<T> : IDisposable where T : class
     {
-        void StartReading(ConsumeQueueHandler<T> consumeQueueHandler);
+        CommandNotification StartReading(ConsumeQueueHandler<T> consumeQueueHandler);
 
         void FinishReading();
     }
