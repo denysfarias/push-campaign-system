@@ -1,4 +1,5 @@
-﻿using Domain.PushNotificationProvider;
+﻿using Domain.Notifications.DataTransferObjects;
+using Domain.PushNotificationProvider;
 using Domain.PushNotificationProvider.Models;
 using System.IO;
 
@@ -13,7 +14,7 @@ namespace PushNotificationProvider
             _textWriter = textWriter;
         }
 
-        public void PushNotification(PushNotificationPayload payload)
+        public CommandNotification PushNotification(PushNotificationPayload payload)
         {
             var visitDescription = PushNotificationProviderHelper.GetVisitDescription(payload);
             _textWriter.WriteLine(visitDescription);
@@ -24,6 +25,8 @@ namespace PushNotificationProvider
             _textWriter.WriteLine($"===> Mixpanel logging: Olar! {payload.Message}");
 
             _textWriter.WriteLine();
+
+            return new CommandNotification();
         }
     }
 }

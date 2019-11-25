@@ -6,6 +6,7 @@ using MessageQueue;
 using MessageQueue.Configurations;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IndexCampaignWorker
 {
@@ -15,7 +16,7 @@ namespace IndexCampaignWorker
 
         private static ICampaignIndexer _campaignIndexer;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             using (var setCache = new SetCache())
             using (var messageQueueReader = new MessageQueueReader<Campaign>(new IndexCampaignConfiguration(), item => DateTime.Now.ToString("u")))
@@ -27,7 +28,7 @@ namespace IndexCampaignWorker
 
                 _campaignIndexer = new CampaignIndexer(setCache);
 
-                var commandResult = messageQueueReader.StartReading(HandleData);
+                var commandResult = await messageQueueReader.StartReadingAsync(HandleData);
 
                 if (commandResult.IsInvalid)
                 {
@@ -41,11 +42,11 @@ namespace IndexCampaignWorker
             }
         }
 
-        public static async void HandleData(Campaign campaign, AckHandler ackHandler, NackHandler nackHandler)
+        public static async Task HandleData(Campaign campaign, AckHandler ackHandler, NackHandler nackHandler)
         {
             Console.WriteLine($" [-] Campaign {campaign.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
 
-            var indexingResult = await _campaignIndexer.IndexCampaign(campaign);
+            var indexingResult = await _campaignIndexer.IndexCampaignAsync(campaign);
 
             if (indexingResult.Notifications.Any())
             {

@@ -18,23 +18,36 @@ namespace Caching
             _redis = ConnectionMultiplexer.Connect(GeneralData.SERVER);
         }
 
-        public async Task<CommandNotification> AddOrAppend(string key, string value)
+        public async Task<CommandNotification> AddOrAppendAsync(string key, string value)
         {
-            var db = _redis.GetDatabase();
-            var added = await db.SetAddAsync(key, value);
-            
-            return new CommandNotification();
+            try
+            {
+                var db = _redis.GetDatabase();
+                var added = await db.SetAddAsync(key, value);
+                return new CommandNotification();
+            }
+            catch (Exception ex)
+            {
+                return new CommandNotification(property: key, message: $"Error appending value \"{value}\" to key \"{key}\"", level: Domain.Notifications.Level.Error);
+            }
         }
 
-        public async Task<ObjectWithNotification<IEnumerable<string>>> GetAll(string key)
+        public async Task<ObjectWithNotification<IEnumerable<string>>> GetAllAsync(string key)
         {
-            var db = _redis.GetDatabase();
+            try
+            {
+                var db = _redis.GetDatabase();
 
-            var values = await db.SetMembersAsync(key);
+                var values = await db.SetMembersAsync(key);
 
-            var realValues = values.Select(value => (string)value).ToList();
+                var realValues = values.Select(value => (string)value).ToList();
 
-            return new ObjectWithNotification<IEnumerable<string>>(realValues);
+                return new ObjectWithNotification<IEnumerable<string>>(realValues);
+            }
+            catch (Exception ex)
+            {
+                return new ObjectWithNotification<IEnumerable<string>>(@object: null, property: key, message: $"Error getting values from key \"{key}\"", level: Domain.Notifications.Level.Error);
+            }
         }
 
         #region IDisposable Support

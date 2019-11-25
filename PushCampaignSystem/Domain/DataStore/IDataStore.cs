@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Domain.Notifications.DataTransferObjects;
+using System.Collections.Generic;
 
 namespace Domain.DataStore
 {
     public interface IDataStore<TData> where TData : class
     {
-        IEnumerable<TData> FindAll();
+        ObjectWithNotification<IEnumerable<TData>> FindAll();
 
-        void Load(IEnumerable<TData> data);
+        CommandNotification Load(IEnumerable<TData> data);
 
-        void Reset();
+        CommandNotification Reset();
     }
 }

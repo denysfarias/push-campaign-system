@@ -16,7 +16,7 @@ namespace IndexCampaignWorker
             this._setCache = setCache;
         }
 
-        public async Task<CommandNotification> IndexCampaign(Campaign campaign)
+        public async Task<CommandNotification> IndexCampaignAsync(Campaign campaign)
         {
             foreach (var target in campaign.Targeting)
             {
@@ -29,7 +29,7 @@ namespace IndexCampaignWorker
 
                 var payload = JsonConvert.SerializeObject(pushCampaign);
 
-                var addResult = await _setCache.AddOrAppend(placeId.ToString(), payload);
+                var addResult = await _setCache.AddOrAppendAsync(placeId.ToString(), payload);
 
                 if (addResult.IsInvalid)
                     return addResult;

@@ -1,12 +1,13 @@
 ﻿using Domain.DataStore.Entities;
+using Domain.Notifications.DataTransferObjects;
 using System.Collections.Generic;
 
 namespace Domain.Services
 {
     public interface IVisitManager
     {
-        IEnumerable<Visit> GetAll();
+        ObjectWithNotification<IEnumerable<Visit>> GetAll();
 
-        void Load(IEnumerable<Visit> visits);
+        CommandNotification Load(IEnumerable<Visit> visits);
     }
 }

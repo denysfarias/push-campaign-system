@@ -7,6 +7,7 @@ using MessageQueue.Configurations;
 using PushNotificationProvider;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PushCampaignWorker
 {
@@ -16,7 +17,7 @@ namespace PushCampaignWorker
 
         private static ICampaignPusher _campaignPusher;        
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             using (var setCache = new SetCache())
             using (var messageQueueReader = new MessageQueueReader<Visit>(new PushCampaignConfiguration(), item => DateTime.Now.ToString("u")))
@@ -29,7 +30,7 @@ namespace PushCampaignWorker
                 var pushNotificationProviderFactory = new PushNotificationProviderFactory(Console.Out);
                 _campaignPusher = new CampaignPusher(setCache, pushNotificationProviderFactory);
 
-                var commandResult = messageQueueReader.StartReading(HandleData);
+                var commandResult = await messageQueueReader.StartReadingAsync(HandleData);
 
                 if (commandResult.IsInvalid)
                 {
@@ -43,11 +44,11 @@ namespace PushCampaignWorker
             }
         }
 
-        public static async void HandleData(Visit visit, AckHandler ackHandler, NackHandler nackHandler)
+        public static async Task HandleData(Visit visit, AckHandler ackHandler, NackHandler nackHandler)
         {
             Console.WriteLine($" [-] Vist {visit.Id} RECEIVED at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}.");
 
-            var pushingResult = await _campaignPusher.PushCampaign(visit);
+            var pushingResult = await _campaignPusher.PushCampaignAsync(visit);
 
             if (pushingResult.Notifications.Any())
             {

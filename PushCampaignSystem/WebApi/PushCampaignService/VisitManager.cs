@@ -1,5 +1,6 @@
 ﻿using Domain.DataStore;
 using Domain.DataStore.Entities;
+using Domain.Notifications.DataTransferObjects;
 using Domain.PushNotificationProvider;
 using Domain.PushNotificationProvider.Models;
 using Domain.Services;
@@ -22,33 +23,42 @@ namespace WebApi.PushCampaignService
             _pushNotificationProviderFactory = pushNotificationProviderFactory;
         }
 
-        public IEnumerable<Visit> GetAll()
+        public ObjectWithNotification<IEnumerable<Visit>> GetAll()
         {
             return _visitStore.FindAll();
         }
 
-        public void Load(IEnumerable<Visit> visits)
+        public CommandNotification Load(IEnumerable<Visit> visits)
         {
-            _visitStore.Load(visits);
-
             PushNotifications(visits);
+            return _visitStore.Load(visits);
         }
 
-        private void PushNotifications(IEnumerable<Visit> visits)
+        private CommandNotification PushNotifications(IEnumerable<Visit> visits)
         {
             foreach (var visit in visits)
             {
-                var pushCampaignList = _campaignSearch.FindMessagesForPlace(visit.PlaceId);
+                var pushCampaignListResult = _campaignSearch.FindMessagesForPlace(visit.PlaceId);
 
-                foreach (var pushCampaign in pushCampaignList)
+                if (pushCampaignListResult.IsInvalid)
+                    return new CommandNotification(pushCampaignListResult);
+
+                foreach (var pushCampaign in pushCampaignListResult.Object)
                 {
-                    var provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
+                    var providerResult = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
+
+                    if (providerResult.IsInvalid)
+                        return new CommandNotification(providerResult);
+
+                    var provider = providerResult.Object;
 
                     var payload = new PushNotificationPayload() { DeviceId = visit.DeviceId, Message = pushCampaign.Message, VisitId = visit.Id };
 
                     provider.PushNotification(payload);
                 }
             }
+
+            return new CommandNotification();
         }
     }
 }

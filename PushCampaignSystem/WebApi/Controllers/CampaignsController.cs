@@ -29,10 +29,14 @@ namespace WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Campaign>> GetAll()
         {
-            var result = _campaignManager.GetAll()
+            var result = _campaignManager.GetAll();
+
+            if (result.IsInvalid)
+                return new StatusCodeResult(500);
+
+            return result.Object
                 .Select(entity => CampaignMapper.ToModel(entity))
                 .ToList();
-            return result;
         }
 
         /// <summary>
@@ -47,7 +51,11 @@ namespace WebApi.Controllers
         public ActionResult PostBatch([FromBody] IEnumerable<Campaign> campaigns)
         {
             var entities = campaigns.Select(model => CampaignMapper.ToEntity(model)).ToList();
-            _campaignManager.Load(entities);
+            var result =_campaignManager.Load(entities);
+
+            if (result.IsInvalid)
+                return new StatusCodeResult(500);
+
             return Ok();
         }
 

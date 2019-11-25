@@ -1,5 +1,6 @@
 ﻿using Domain.DataStore;
 using Domain.DataStore.Entities;
+using Domain.Notifications.DataTransferObjects;
 using Domain.Services;
 using System.Collections.Generic;
 
@@ -14,14 +15,14 @@ namespace WebApi.PushCampaignService
             _campaignStore = campaignStore;
         }
 
-        public IEnumerable<Campaign> GetAll()
+        public ObjectWithNotification<IEnumerable<Campaign>> GetAll()
         {
             return _campaignStore.FindAll();
         }
 
-        public void Load(IEnumerable<Campaign> campaigns)
+        public CommandNotification Load(IEnumerable<Campaign> campaigns)
         {
-            _campaignStore.Load(campaigns);
+            return _campaignStore.Load(campaigns);
         }
     }
 }

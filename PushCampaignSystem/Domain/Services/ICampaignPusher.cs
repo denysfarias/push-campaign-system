@@ -6,6 +6,6 @@ namespace Domain.Services
 {
     public interface ICampaignPusher
     {
-        Task<CommandNotification> PushCampaign(Visit visit);
+        Task<CommandNotification> PushCampaignAsync(Visit visit);
     }
 }

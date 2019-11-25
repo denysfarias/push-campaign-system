@@ -6,8 +6,8 @@ namespace Domain.Caching
 {
     public interface ISetCache
     {
-        Task<ObjectWithNotification<IEnumerable<string>>> GetAll(string key);
+        Task<ObjectWithNotification<IEnumerable<string>>> GetAllAsync(string key);
         
-        Task<CommandNotification> AddOrAppend(string key, string value);
+        Task<CommandNotification> AddOrAppendAsync(string key, string value);
     }
 }

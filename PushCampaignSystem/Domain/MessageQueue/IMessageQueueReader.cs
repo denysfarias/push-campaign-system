@@ -1,15 +1,16 @@
 ﻿using Domain.Notifications.DataTransferObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace Domain.MessageQueue
 {
     public delegate void AckHandler();
     public delegate void NackHandler(bool requeue);
-    public delegate void ConsumeQueueHandler<T>(T data, AckHandler ackHandler, NackHandler nackHandler);
+    public delegate Task ConsumeQueueHandler<T>(T data, AckHandler ackHandler, NackHandler nackHandler);
 
     public interface IMessageQueueReader<T> : IDisposable where T : class
     {
-        CommandNotification StartReading(ConsumeQueueHandler<T> consumeQueueHandler);
+        Task<CommandNotification> StartReadingAsync(ConsumeQueueHandler<T> consumeQueueHandler);
 
         void FinishReading();
     }

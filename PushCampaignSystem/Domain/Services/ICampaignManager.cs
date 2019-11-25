@@ -1,12 +1,13 @@
 ﻿using Domain.DataStore.Entities;
+using Domain.Notifications.DataTransferObjects;
 using System.Collections.Generic;
 
 namespace Domain.Services
 {
     public interface ICampaignManager
     {
-        IEnumerable<Campaign> GetAll();
+        ObjectWithNotification<IEnumerable<Campaign>> GetAll();
 
-        void Load(IEnumerable<Campaign> campaigns);
+        CommandNotification Load(IEnumerable<Campaign> campaigns);
     }
 }

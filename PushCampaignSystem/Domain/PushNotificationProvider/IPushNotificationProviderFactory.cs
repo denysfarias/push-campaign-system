@@ -1,7 +1,9 @@
-﻿namespace Domain.PushNotificationProvider
+﻿using Domain.Notifications.DataTransferObjects;
+
+namespace Domain.PushNotificationProvider
 {
     public interface IPushNotificationProviderFactory
     {
-        IPushNotificationProvider Create(string providerName);
+        ObjectWithNotification<IPushNotificationProvider> Create(string providerName);
     }
 }

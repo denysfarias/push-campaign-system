@@ -1,12 +1,9 @@
 ﻿using Domain.DataStore;
 using Domain.DataStore.Entities;
 using Domain.MessageQueue;
-using Domain.PushNotificationProvider;
+using Domain.Notifications.DataTransferObjects;
 using Domain.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApi.PushCampaignService
 {
@@ -22,19 +19,19 @@ namespace WebApi.PushCampaignService
             _pushCampaignQueueWriter = messageQueueWriterResolver.Resolve<Visit>(new MessageQueue.Configurations.PushCampaignConfiguration());
         }
 
-        public IEnumerable<Visit> GetAll()
+        public ObjectWithNotification<IEnumerable<Visit>> GetAll()
         {
             return _visitStore.FindAll();
         }
 
-        public void Load(IEnumerable<Visit> visits)
+        public CommandNotification Load(IEnumerable<Visit> visits)
         {
             var result = _pushCampaignQueueWriter.Post(visits);
 
             if (result.IsInvalid)
-                throw new Exception();
+                return result;
 
-            _visitStore.Load(visits);
+            return _visitStore.Load(visits);
         }
     }
 }

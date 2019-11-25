@@ -1,4 +1,5 @@
-﻿using Domain.PushNotificationProvider;
+﻿using Domain.Notifications.DataTransferObjects;
+using Domain.PushNotificationProvider;
 using System.IO;
 
 namespace PushNotificationProvider
@@ -12,15 +13,18 @@ namespace PushNotificationProvider
             _textWriter = textWriter;
         }
 
-        public IPushNotificationProvider Create(string providerName)
+        public ObjectWithNotification<IPushNotificationProvider> Create(string providerName)
         {
+            IPushNotificationProvider result;
+
             if (providerName == "localytics")
-                return new LocalyticsProvider(_textWriter);
+                result = new LocalyticsProvider(_textWriter);
+            else if (providerName == "mixpanel")
+                result = new MixPanelProvider(_textWriter);
+            else
+                result = new NoProvider(_textWriter);
 
-            if (providerName == "mixpanel")
-                return new MixPanelProvider(_textWriter);
-
-            return new NoProvider(_textWriter);
+            return new ObjectWithNotification<IPushNotificationProvider>(result);
         }
     }
 }

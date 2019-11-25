@@ -30,7 +30,12 @@ namespace WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Visit>> GetAll()
         {
-            return _visitManager.GetAll()
+            var result = _visitManager.GetAll();
+
+            if (result.IsInvalid)
+                return new StatusCodeResult(500);
+
+            return result.Object
                 .Select(entity => VisitMapper.ToModel(entity))
                 .ToList();
         }
@@ -47,7 +52,11 @@ namespace WebApi.Controllers
         public ActionResult PostBatch([FromBody] IEnumerable<Visit> visits)
         {
             var entities = visits.Select(model => VisitMapper.ToEntity(model)).ToList();
-            _visitManager.Load(entities);
+            var result = _visitManager.Load(entities);
+
+            if (result.IsInvalid)
+                return new StatusCodeResult(500);
+
             return Ok();
         }
 

@@ -1,9 +1,10 @@
-﻿using Domain.PushNotificationProvider.Models;
+﻿using Domain.Notifications.DataTransferObjects;
+using Domain.PushNotificationProvider.Models;
 
 namespace Domain.PushNotificationProvider
 {
     public interface IPushNotificationProvider
     {
-        void PushNotification(PushNotificationPayload payload);
+        CommandNotification PushNotification(PushNotificationPayload payload);
     }
 }

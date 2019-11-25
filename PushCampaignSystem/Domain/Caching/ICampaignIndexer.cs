@@ -6,6 +6,6 @@ namespace Domain.Caching
 {
     public interface ICampaignIndexer
     {
-        Task<CommandNotification> IndexCampaign(Campaign campaign);
+        Task<CommandNotification> IndexCampaignAsync(Campaign campaign);
     }
 }

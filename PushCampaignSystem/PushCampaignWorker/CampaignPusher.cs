@@ -22,9 +22,9 @@ namespace PushCampaignWorker
             _pushNotificationProviderFactory = pushNotificationProviderFactory;
         }
 
-        public async Task<CommandNotification> PushCampaign(Visit visit)
+        public async Task<CommandNotification> PushCampaignAsync(Visit visit)
         {
-            var readCacheResult = await _setCache.GetAll(visit.PlaceId.ToString());
+            var readCacheResult = await _setCache.GetAllAsync(visit.PlaceId.ToString());
             if (readCacheResult.IsInvalid)
                 return new CommandNotification(readCacheResult);
 
@@ -43,12 +43,19 @@ namespace PushCampaignWorker
                 };
             }
 
+            ObjectWithNotification<IPushNotificationProvider> providerResult;
             IPushNotificationProvider provider;
             PushNotificationPayload payload;
+            CommandNotification pushNotification;
             foreach (var pushCampaign in pushCampaigns)
             {
-                provider = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
-                
+                providerResult = _pushNotificationProviderFactory.Create(pushCampaign.Provider);
+
+                if (providerResult.IsInvalid)
+                    return new CommandNotification(providerResult);
+
+                provider = providerResult.Object;
+
                 payload = new PushNotificationPayload()
                 {
                     DeviceId = visit.DeviceId,
@@ -56,7 +63,11 @@ namespace PushCampaignWorker
                     VisitId = visit.Id
                 };
 
-                provider.PushNotification(payload);
+                pushNotification = provider.PushNotification(payload);
+                if (pushNotification.IsInvalid)
+                {
+                    return new CommandNotification(pushNotification);
+                }
             }
 
             return new CommandNotification();

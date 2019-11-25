@@ -1,5 +1,6 @@
 ﻿using Domain.DataStore;
 using Domain.DataStore.Entities;
+using Domain.Notifications.DataTransferObjects;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,21 +20,24 @@ namespace WebApi.PushCampaignService.DataStore
             _visits = visits.ToList();
         }
 
-        public void Load(IEnumerable<Visit> data)
+        public CommandNotification Load(IEnumerable<Visit> data)
         {
             //TODO: validate input
 
             _visits.AddRange(data);
+            return new CommandNotification();
         }
 
-        public IEnumerable<Visit> FindAll()
+        public ObjectWithNotification<IEnumerable<Visit>> FindAll()
         {
-            return _visits.AsReadOnly();
+            var result = _visits.AsReadOnly();
+            return new ObjectWithNotification<IEnumerable<Visit>>(result);
         }
 
-        public void Reset()
+        public CommandNotification Reset()
         {
             _visits.Clear();
+            return new CommandNotification();
         }
     }
 }

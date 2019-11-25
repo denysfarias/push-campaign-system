@@ -1,10 +1,12 @@
-﻿using Domain.PushNotificationProvider.Models;
+﻿using Domain.Notifications.DataTransferObjects;
+using Domain.PushNotificationProvider.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.DataStore
 {
     public interface ICampaignSearch
     {
-        IEnumerable<PushCampaign> FindMessagesForPlace(int placeId);
+        ObjectWithNotification<IEnumerable<PushCampaign>> FindMessagesForPlace(int placeId);
     }
 }

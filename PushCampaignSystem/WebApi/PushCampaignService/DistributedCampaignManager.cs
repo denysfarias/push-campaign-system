@@ -1,8 +1,8 @@
 ﻿using Domain.DataStore;
 using Domain.DataStore.Entities;
 using Domain.MessageQueue;
+using Domain.Notifications.DataTransferObjects;
 using Domain.Services;
-using System;
 using System.Collections.Generic;
 
 namespace WebApi.PushCampaignService
@@ -19,18 +19,18 @@ namespace WebApi.PushCampaignService
             _indexCampaignQueueWriter = messageQueueWriterResolver.Resolve<Campaign>(new MessageQueue.Configurations.IndexCampaignConfiguration());
         }
 
-        public IEnumerable<Campaign> GetAll()
+        public ObjectWithNotification<IEnumerable<Campaign>> GetAll()
         {
             return _campaignStore.FindAll();
         }
 
-        public void Load(IEnumerable<Campaign> campaigns)
+        public CommandNotification Load(IEnumerable<Campaign> campaigns)
         {
             var indexingResult = _indexCampaignQueueWriter.Post(campaigns);
             if (indexingResult.IsInvalid)
-                throw new Exception();
+                return indexingResult;
 
-            _campaignStore.Load(campaigns);
+            return _campaignStore.Load(campaigns);
         }
     }
 }

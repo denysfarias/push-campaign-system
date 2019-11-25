@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Threading.Tasks;
 
 namespace MessageQueue
 {
@@ -31,14 +32,14 @@ namespace MessageQueue
             MessageIdSelector = messageIdSelector;
         }
 
-        public CommandNotification StartReading(ConsumeQueueHandler<T> consumeQueueHandler)
+        public async Task<CommandNotification> StartReadingAsync(ConsumeQueueHandler<T> consumeQueueHandler)
         {
             if (Consumer != null)
             {
                 return new CommandNotification(property: null, message: ConsumerAlreadyExistsException, level: Domain.Notifications.Level.Error);
             }
 
-            var commandResult = OpenConnection();
+            var commandResult = OpenAsyncConnection();
             if (commandResult.IsInvalid)
             {
                 return commandResult;
@@ -46,8 +47,8 @@ namespace MessageQueue
 
             try
             {
-                var consumer = new EventingBasicConsumer(Channel);
-                consumer.Received += (model, ea) =>
+                var consumer = new AsyncEventingBasicConsumer(Channel);
+                consumer.Received += async (model, ea) =>
                 {
                     var body = ea.Body;
                     var message = System.Text.Encoding.UTF8.GetString(body);
@@ -56,7 +57,7 @@ namespace MessageQueue
                     void ackHandler() => Channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: MultipleAck);
                     void nackDelegate(bool requeueMessage) => Channel.BasicNack(deliveryTag: ea.DeliveryTag, multiple: MultipleNack, requeue: requeueMessage);
 
-                    consumeQueueHandler(data, ackHandler, nackDelegate);
+                    await consumeQueueHandler(data, ackHandler, nackDelegate);
                 };
 
                 Channel.BasicConsume(queue: Configuration.Queue,
@@ -81,7 +82,7 @@ namespace MessageQueue
             }
         }
 
-        private CommandNotification OpenConnection()
+        private CommandNotification OpenAsyncConnection()
         {
             if (Channel != null)
                 return new CommandNotification();
@@ -93,7 +94,8 @@ namespace MessageQueue
                     HostName = Configuration.Hostname, 
                     UserName = Configuration.Username, 
                     Password = Configuration.Password, 
-                    VirtualHost = Configuration.VirtualHost 
+                    VirtualHost = Configuration.VirtualHost ,
+                    DispatchConsumersAsync = true
                 };
 
                 Connection = factory.CreateConnection();
